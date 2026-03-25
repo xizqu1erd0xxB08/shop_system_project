@@ -5,6 +5,11 @@ require_once '../models/Database.php';
 require_once '../models/Product.php';
 require_once '../models/Sale.php';
 
+// Headers anti-caché - Fuerza al navegador a siempre pedir la página fresca
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Pragma: no-cache");
+header("Expires: 0");
+
 // Verificar sesión activa
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_name'])) {
     header("Location: ../views/loginView.php"); // Redirigir al login si la sesión no está activa

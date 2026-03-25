@@ -1,5 +1,11 @@
 <?php
 session_start(); 
+
+// Headers anti-caché - Fuerza al navegador a siempre pedir la página fresca
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Pragma: no-cache");
+header("Expires: 0");
+
 // Validar sesión
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_name'])) {
     header("Location: loginView.php");

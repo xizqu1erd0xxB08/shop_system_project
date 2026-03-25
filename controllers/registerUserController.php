@@ -4,6 +4,12 @@ require_once '../config.php';
 require_once '../models/Database.php';
 require_once '../models/User.php';
 
+// Headers anti-caché - Fuerza al navegador a siempre pedir la página fresca
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Pragma: no-cache");
+header("Expires: 0");
+
+// Validar sesión
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_name']) || !in_array(1, $_SESSION['roles'])) {
     header("Location: ../views/loginView.php");
     exit();

@@ -1,6 +1,11 @@
 <?php 
 session_start();  // Iniciar sesión para acceder a $_SESSION
  
+// Headers anti-caché - Fuerza al navegador a siempre pedir la página fresca
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Pragma: no-cache");
+header("Expires: 0");
+
 // Validar que el usuario esté logueado
 if(!isset($_SESSION['user_id']) || !isset($_SESSION['user_name']) || !isset($_SESSION['roles'])){
     header("Location: loginView.php");  // Si no está logueado, redirigir al login
