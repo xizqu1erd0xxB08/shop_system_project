@@ -1,3 +1,11 @@
+<?php
+session_start(); 
+// Validar sesión
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_name'])) {
+    header("Location: loginView.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

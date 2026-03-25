@@ -7,7 +7,7 @@ require_once '../models/Product.php';
 // Validar que el usuario este logueado
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_name'])) {
     header("Location: ../views/loginView.php");
-    exit();
+    exit();    
 }
 
 // Validar que los datos hayan llegado por POST
