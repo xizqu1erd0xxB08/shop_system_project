@@ -58,6 +58,7 @@ $roles = $_SESSION['roles']; // Array con los role_id del usuario [1, 2] o [1] o
     <a href="../controllers/registerSaleFormController.php">Register Sale</a><br>
     <a href="../controllers/viewSalesController.php">View Sales History</a><br>
     <a href="../controllers/reportsController.php">Ver Reportes</a><br>
+    <a href="../controllers/viewDeletedProductsController.php">Ver productos eliminados</a><br>
     <a href="../controllers/logoutController.php">Logout</a>
 </body>
 </html>

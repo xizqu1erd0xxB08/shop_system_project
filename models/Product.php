@@ -152,6 +152,83 @@ class Product {
     return ['success' => true];
    }
 
+   // Método reactivateProduct
+   public function reactivateProduct($product_id, $user_id){
+    
+    $reactivateProductQuery = "UPDATE products SET is_active = 1 WHERE is_active = 0 AND product_id = ? AND user_id = ?"; // Query
+    
+    $reactivateProductStmt = mysqli_prepare($this->connection, $reactivateProductQuery); // Statement
+    
+    mysqli_stmt_bind_param($reactivateProductStmt, 'ii', $product_id, $user_id); // Bindear statement
+    
+    $reactivateProductStmtExecuted = mysqli_stmt_execute($reactivateProductStmt); // Ejecutar statement
+
+    // Validar que el Statement se haya ejecutado correctamente
+    if (!$reactivateProductStmtExecuted || mysqli_stmt_affected_rows($reactivateProductStmt) < 0) {
+        $error = mysqli_stmt_error($reactivateProductStmt);
+        mysqli_stmt_close($reactivateProductStmt);
+        return ['success' => false, 'errorMessage' => "Error en la ejecución de reactivar producto: " . $error];
+    }
+
+    // Validar si el Statement se ejecutó, pero la base de datos NO se modificó
+    if (mysqli_stmt_affected_rows($reactivateProductStmt) === 0) {
+        mysqli_stmt_close($reactivateProductStmt);
+        return ['success' => false, 'errorMessage' => 'Activación de producto exitosa, pero base de datos no modificada.'];
+    }
+
+    // Todo correcto
+    mysqli_stmt_close($reactivateProductStmt);
+    return ['success' => true];
+   }
+
+    // Método getDeletedProducts
+   public function getDeletedProducts($user_id){
+    // query que obtiene SOLAMENTE los productos eliminados
+    $get_deleted_products_query = "SELECT product_id, product_name, product_price, current_stock, created_at, updated_at FROM products WHERE user_id = ? AND is_active = 0";
+    
+    $get_deleted_products_stmt = mysqli_prepare($this->connection, $get_deleted_products_query); // Preparar Statement
+
+    mysqli_stmt_bind_param($get_deleted_products_stmt, 'i', $user_id); // Bindear statement
+
+    $get_deleted_products_stmt_executed = mysqli_stmt_execute($get_deleted_products_stmt); // Ejecutar Statement
+
+    // Verificar que el Statement se haya ejecuado correctamente
+    if (!$get_deleted_products_stmt_executed) {
+        $error = mysqli_stmt_error($get_deleted_products_stmt);
+        mysqli_stmt_close($get_deleted_products_stmt);
+        return ['success' => false, 'errorMessage' => 'Error del Statement al mostrar productos eliminados: ' . $error]; 
+    }
+
+    // Obtener resultados de la consulta
+    $get_deleted_products_result = mysqli_stmt_get_result($get_deleted_products_stmt);
+
+    // Validar que el select se ejecuto correctamente
+    if (!$get_deleted_products_result) {
+        $error = mysqli_stmt_error($get_deleted_products_stmt);
+        mysqli_stmt_close($get_deleted_products_stmt);
+        return ['success' => false, 'errorMessage' => 'Error al obtener productos eliminados: ' . $error];
+    }
+
+    // Validar que el usuario tenga al menos un producto eliminado
+    if (mysqli_num_rows($get_deleted_products_result) === 0) {
+        mysqli_stmt_close($get_deleted_products_stmt);
+        return ['success' => false, 'errorMessage' => 'No tienes productos eliminados'];
+    }
+
+    // Crear un array vacío para guardar los productos eliminados que se obtuvieron
+    $deleted_products = [];
+
+    // Obtener todos los productos eliminados mediante un loop while
+    while ($deleted_product = mysqli_fetch_assoc($get_deleted_products_result)) {
+        $deleted_products[] = $deleted_product; // Añadir al array cada producto eliminado
+    }
+
+    mysqli_stmt_close($get_deleted_products_stmt); // Cerrar Statement
+
+    // Retornar response array de éxito con el array de productos eliminados
+    return ['success' => true, 'deleted_products' => $deleted_products];
+   }
+
    // Método getProductById
    public function getProductById($product_id, $user_id){
     // SELECT con WHERE

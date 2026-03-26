@@ -37,7 +37,6 @@ $get_products = $product_object->getProductsByUser($user_id);
 
 // Validar ejecución correcta del método
 if (!$get_products['success']) {
-    // Retornar response array de error:
     $database->closeConnection();
     die($get_products['errorMessage']);
 }
