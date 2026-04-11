@@ -37,11 +37,23 @@
                         <!-- Formulario MINI para DELETE con POST (más seguro) -->
                         <form action="../controllers/deleteProductController.php" method="post" style="display: inline;"> <!-- style="display: inline;" → El formulario NO ocupa espacio extra (queda en la misma línea) -->
                             <input type="hidden" name="product_id" value="<?php echo $product['product_id']; ?>"> <!-- <input type="hidden"> → Envía el product_id pero NO se ve en pantalla -->
-                            <button type="submit">Delete</button> <!-- <button type="submit"> → Botón clickeable que envía el formulario por POST -->
+                            <button type="submit" class="btn-delete">Delete</button> <!-- <button type="submit"> → Botón clickeable que envía el formulario por POST -->
                         </form>
                     </td>
                 </tr>
                 <?php endforeach; ?>
     </table>
+
+    <script>
+    // Confirmacion antes de eliminar un producto
+    document.querySelectorAll('.btn-delete').forEach(function(button) {
+        button.addEventListener('click', function(e) {
+            const confirmed = confirm('¿Estás seguro de que quieres eliminar este producto?');
+            if (!confirmed) {
+                e.preventDefault();
+            }
+        });
+    });
+    </script>
 </body>
 </html>

@@ -10,7 +10,7 @@
 </head>
 <body>
     <h2>Registrar New Sale</h2>
-    <form action="../controllers/registerSaleController.php" method="post">
+    <form action="../controllers/registerSaleController.php" method="post" id="sale-form">
         <!-- Proceder a crear el formulario con 5 dropdowns fijos para cada venta, es decir,
         se pueden vender máximo 5 productos en cada venta (por ahora) -->
         <!-- Producto 1 -->
@@ -86,6 +86,42 @@
         <button type="submit">Register Sale</button>
 
     </form>
+<script>
+    // Validar que al menos un producto tenga una cantidad mayor a 0
+    document.getElementById('sale-form').addEventListener('submit', function(e) {
+        const quantities = [
+            document.getElementById('quantity_1'),
+            document.getElementById('quantity_2'),
+            document.getElementById('quantity_3'),
+            document.getElementById('quantity_4'),
+            document.getElementById('quantity_5')
+        ];
 
+        const productIds = [
+            document.getElementById('product_id_1'),
+            document.getElementById('product_id_2'),
+            document.getElementById('product_id_3'),
+            document.getElementById('product_id_4'),
+            document.getElementById('product_id_5')
+        ];
+
+        let hasValidProduct = false;
+
+        for (let i = 0; i < 5; i++) {
+            const hasProduct = productIds[i].value !== '';
+            const hasQuantity = parseInt(quantities[i].value) > 0;
+
+            if (hasProduct && hasQuantity) {
+                hasValidProduct = true;
+                break;
+            }
+        }
+
+        if (!hasValidProduct) {
+            e.preventDefault();
+            alert('Por favor seleccione un producto con una cantidad mayor a 0.');
+        }
+    });
+</script>
 </body>
 </html>

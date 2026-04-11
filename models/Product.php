@@ -8,7 +8,7 @@ class Product {
     // Constructor
     public function __construct($connection) // $connection que traemos de Database.php
     {
-        $this->connection = $connection; // Indicamos qe el $connection de Product.php es igual al $connection de Database.php
+        $this->connection = $connection; // Asignar el valor $connection de Database.php al valor $connection de Product.php
     }
 
     // Método createProduct
@@ -33,7 +33,7 @@ class Product {
         $current_stock = (int)$current_stock;
         if($current_stock < 0) 
             {
-                return ['success' => false, 'errorMessage' => 'Debe tener al menos una unidad en stock'];
+                return ['success' => false, 'errorMessage' => 'El stock no puede ser negativo'];
             }
         
         // Hacer el INSERT de producto

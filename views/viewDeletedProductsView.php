@@ -30,11 +30,23 @@
                 <td>
                     <form action="../controllers/reactivateProductController.php" method="post" style="display: inline;"> <!-- style="display: inline;" → El formulario NO ocupa espacio extra (queda en la misma línea) -->
                         <input type="hidden" name="product_id" value="<?php echo $deleted_product['product_id']; ?>"> <!-- <input type="hidden"> → Envía el product_id pero NO se ve en pantalla -->
-                        <button type="submit">Reactivate!</button> <!-- <button type="submit"> → Botón clickeable que envía el formulario por POST -->
+                        <button type="submit" class="btn-reactivate">Reactivate!</button> <!-- <button type="submit"> → Botón clickeable que envía el formulario por POST -->
                     </form>
                 </td>
             </tr>
         <?php endforeach; ?>
     </table>
+
+    <script>
+    // Confirmación antes de reactivar un producto
+    document.querySelectorAll('.btn-reactivate').forEach(function(button) {
+        button.addEventListener('click', function(e) {
+            const confirmed = confirm('¿Quieres reactivar este producto?');
+            if (!confirmed) {
+                e.preventDefault();
+            }
+        });
+    });
+    </script>
 </body>
 </html>
